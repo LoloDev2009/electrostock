@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventario · Componentes electrónicos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="board">
+    <header class="board__header">
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true"></span>
+        <div>
+          <h1>Inventario</h1>
+          <p class="brand__sub">componentes &amp; materiales electrónicos</p>
+        </div>
+      </div>
+      <div class="header-stats" id="header-stats"></div>
+    </header>
+
+    <section class="controls">
+      <input id="search" type="text" placeholder="Buscar por nombre, valor o número de parte…" autocomplete="off">
+      <select id="category-filter">
+        <option value="">Todas las categorías</option>
+      </select>
+      <label class="toggle">
+        <input type="checkbox" id="low-stock-toggle">
+        <span>Solo stock bajo</span>
+      </label>
+      <button id="btn-new" class="btn btn--primary">+ Componente</button>
+    </section>
+
+    <main>
+      <div id="empty-state" class="empty-state hidden">
+        <p>No hay componentes que coincidan.</p>
+      </div>
+      <div id="grid" class="grid"></div>
+    </main>
+  </div>
+
+  <!-- Panel lateral: crear/editar -->
+  <div id="overlay" class="overlay hidden"></div>
+  <aside id="drawer" class="drawer hidden">
+    <div class="drawer__head">
+      <h2 id="drawer-title">Nuevo componente</h2>
+      <button id="drawer-close" class="btn-icon" aria-label="Cerrar">✕</button>
+    </div>
+    <form id="component-form">
+      <input type="hidden" id="f-id">
+
+      <label>Nombre *
+        <input id="f-name" required placeholder="ej: Resistencia 10kΩ 1/4W">
+      </label>
+
+      <div class="grid-2">
+        <label>Categoría *
+          <input id="f-category" required list="category-list" placeholder="ej: resistencia">
+          <datalist id="category-list"></datalist>
+        </label>
+        <label>Subcategoría
+          <input id="f-subcategory" placeholder="ej: película metálica">
+        </label>
+      </div>
+
+      <div class="grid-3">
+        <label>Valor / spec
+          <input id="f-value" placeholder="10kΩ, 100µF...">
+        </label>
+        <label>Voltaje
+          <input id="f-voltage" placeholder="16V">
+        </label>
+        <label>Tolerancia
+          <input id="f-tolerance" placeholder="±5%">
+        </label>
+      </div>
+
+      <div class="grid-2">
+        <label>Encapsulado
+          <input id="f-package" placeholder="THT, SMD 0805, DIP-8...">
+        </label>
+        <label>Ubicación
+          <input id="f-location" placeholder="Gaveta 3B">
+        </label>
+      </div>
+
+      <div class="grid-2">
+        <label>Cantidad *
+          <input id="f-quantity" type="number" min="0" required value="0">
+        </label>
+        <label>Mínimo (alerta)
+          <input id="f-min-quantity" type="number" min="0" value="0">
+        </label>
+      </div>
+
+      <div class="grid-2">
+        <label>Fabricante
+          <input id="f-manufacturer">
+        </label>
+        <label>Número de parte
+          <input id="f-part-number">
+        </label>
+      </div>
+
+      <label>Enlace a datasheet
+        <input id="f-datasheet" type="url" placeholder="https://...">
+      </label>
+
+      <label>Notas
+        <textarea id="f-notes" rows="3"></textarea>
+      </label>
+
+      <div class="drawer__actions">
+        <button type="button" id="btn-delete" class="btn btn--danger hidden">Eliminar</button>
+        <div class="spacer"></div>
+        <button type="button" id="btn-cancel" class="btn">Cancelar</button>
+        <button type="submit" class="btn btn--primary">Guardar</button>
+      </div>
+    </form>
+  </aside>
+
+  <script src="app.js"></script>
+</body>
+</html>
