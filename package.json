@@ -1,0 +1,10 @@
+{
+  "name": "inventario-electronico",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dependencias compartidas por shared/, backend/ y bot/",
+  "dependencies": {
+    "pg": "^8.12.0",
+    "dotenv": "^16.4.5"
+  }
+}

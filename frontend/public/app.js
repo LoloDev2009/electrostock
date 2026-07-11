@@ -23,8 +23,11 @@ async function cargarCategorias() {
   categoryList.innerHTML = cats.map((c) => `<option value="${c.category}">`).join('');
 
   const totalItems = cats.reduce((sum, c) => sum + c.total, 0);
+
+  const totalComponents = cats.reduce((sum, c) => sum + c.total_components, 0);
   headerStats.innerHTML = `
     <div><b>${totalItems}</b>referencias</div>
+    <div><b>${totalComponents}</b>componentes</div>
     <div><b>${cats.length}</b>categorías</div>
   `;
 }
@@ -60,9 +63,12 @@ function render(items) {
 
     return `
       <div class="card ${low ? 'card--low' : ''}" data-id="${c.id}">
-        <span class="card__tag">${c.category}</span>
         <div class="card__top">
-          <div class="card__name">${escapeHtml(c.name)}</div>
+          <div class="card__icon">${iconoDeCategoria(c.category)}</div>
+          <div class="card__title">
+            <span class="card__tag">${escapeHtml(c.category)}</span>
+            <div class="card__name">${escapeHtml(c.name)}</div>
+          </div>
           <div class="card__qty ${low ? 'low' : ''}">${c.quantity}</div>
         </div>
         <div class="card__meta">${metaLines}</div>

@@ -161,8 +161,22 @@ input:focus, select:focus, textarea:focus {
 
 .card__top {
   display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 10px;
   margin-bottom: 8px;
 }
+.card__icon {
+  flex-shrink: 0;
+  width: 34px; height: 34px;
+  border: 1px solid var(--line-bright);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--trace);
+  background: var(--bg-raised);
+}
+.card__icon svg { width: 18px; height: 18px; }
+.card--low .card__icon { color: var(--danger); }
+
+.card__title { flex: 1; min-width: 0; }
 .card__name {
   font-family: var(--display);
   font-weight: 600;
@@ -174,7 +188,7 @@ input:focus, select:focus, textarea:focus {
   font-size: 18px; font-weight: 700;
   color: var(--copper-bright);
   white-space: nowrap;
-  margin-left: 10px;
+  flex-shrink: 0;
 }
 .card__qty.low { color: var(--danger); }
 
@@ -192,7 +206,7 @@ input:focus, select:focus, textarea:focus {
   border: 1px solid var(--line-bright);
   border-radius: 2px;
   padding: 1px 6px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .empty-state {

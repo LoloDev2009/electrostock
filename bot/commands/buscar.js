@@ -20,7 +20,7 @@ module.exports = {
       .setColor(0x9b59b6)
       .setDescription(
         items
-          .map((c) => `**#${c.id} ${c.name}** — ${c.quantity} un. — cat: ${c.category}`)
+          .map((c) => `**#${c.id} ${c.name}** — ${c.quantity} un. — spec: ${c.value_spec}`)
           .join('\n')
       );
 

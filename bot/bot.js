@@ -21,16 +21,19 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-
-  const command = client.commands.get(interaction.commandName);
-  if (!command) return;
-
   try {
-    await command.execute(interaction);
+    if (interaction.isChatInputCommand()) {
+      const command = client.commands.get(interaction.commandName);
+      if (!command) return;
+      await command.execute(interaction);
+    } else if (interaction.isModalSubmit()) {
+      const command = [...client.commands.values()].find((c) => c.modalCustomId === interaction.customId);
+      if (!command || !command.handleModal) return;
+      await command.handleModal(interaction);
+    }
   } catch (err) {
     console.error(err);
-    const mensaje = { content: 'Hubo un error al ejecutar el comando.', ephemeral: true };
+    const mensaje = { content: 'Hubo un error al procesar la interacción.', ephemeral: true };
     if (interaction.replied || interaction.deferred) {
       await interaction.followUp(mensaje);
     } else {

@@ -27,6 +27,9 @@ CREATE INDEX IF NOT EXISTS idx_components_name_trgm ON components USING gin (nam
 -- Requiere la extensión pg_trgm para búsquedas por similitud de texto
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
+CREATE INDEX IF NOT EXISTS idx_components_category ON components(category);
+CREATE INDEX IF NOT EXISTS idx_components_name_trgm ON components USING gin (name gin_trgm_ops);
+
 -- Actualiza updated_at automáticamente en cada UPDATE
 CREATE OR REPLACE FUNCTION set_updated_at()
 RETURNS TRIGGER AS $$

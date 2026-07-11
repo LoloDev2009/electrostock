@@ -11,6 +11,15 @@ const pool = new Pool({
   // database: process.env.PGDATABASE,
 });
 
+pool.query('SELECT 1', (err) => {
+  if (err) {
+    console.error('Error al conectar a la base de datos:', err);
+    process.exit(1);
+  } else {
+    console.log('Conexión a la base de datos establecida correctamente.');
+  }
+});
+
 pool.on('error', (err) => {
   console.error('Error inesperado en el pool de PostgreSQL:', err);
 });
