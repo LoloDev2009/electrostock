@@ -495,6 +495,7 @@ input:focus, select:focus, textarea:focus {
   }
   .sidebar--open { transform: translateX(0); }
 
+  .header-left { width: 100%; justify-content: space-between; }
   .header-right { flex-direction: column; align-items: flex-end; gap: 8px; }
   .header-buttons { flex-direction: row; }
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
