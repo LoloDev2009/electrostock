@@ -9,7 +9,18 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="board">
+  <div id="login-overlay" class="login-overlay">
+    <form id="login-form" class="login-box">
+      <span class="brand__mark" aria-hidden="true"></span>
+      <h1>Inventario</h1>
+      <p class="brand__sub">Ingresá la contraseña para continuar</p>
+      <input type="password" id="login-password" placeholder="Contraseña" required autofocus>
+      <div id="login-error" class="login-error hidden"></div>
+      <button type="submit" class="btn btn--primary">Entrar</button>
+    </form>
+  </div>
+
+  <div class="board hidden" id="board">
     <header class="board__header">
       <div class="brand">
         <span class="brand__mark" aria-hidden="true"></span>
@@ -21,6 +32,7 @@
       <div class="header-right">
         <div class="header-stats" id="header-stats"></div>
         <button id="btn-new" class="btn btn--primary">+ Componente</button>
+        <button id="btn-logout" class="btn" title="Cerrar sesión">Salir</button>
       </div>
     </header>
 

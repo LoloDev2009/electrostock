@@ -81,7 +81,7 @@ async function eliminar(id) {
 
 async function categorias() {
   const { rows } = await pool.query(
-    'SELECT category, COUNT(*)::int AS total, COALESCE(SUM(quantity), 0)::int AS total_components FROM components GROUP BY category ORDER BY category'
+    'SELECT category, COUNT(*)::int AS total FROM components GROUP BY category ORDER BY category'
   );
   return rows;
 }

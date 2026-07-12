@@ -1,5 +1,16 @@
 const API = '/api/components';
 
+// Envoltorio de fetch para la API protegida: si la sesión expiró (401),
+// vuelve a mostrar el login en vez de dejar la app rota a medias.
+async function apiFetch(url, options) {
+  const res = await fetch(url, options);
+  if (res.status === 401) {
+    mostrarLogin('Tu sesión expiró, ingresá de nuevo.');
+    throw new Error('No autenticado');
+  }
+  return res;
+}
+
 const el = (id) => document.getElementById(id);
 const grid = el('grid');
 const emptyState = el('empty-state');
@@ -61,7 +72,7 @@ function actualizarQtyEnDOM(c) {
 }
 
 async function ajustarCantidad(id, delta) {
-  const res = await fetch(`${API}/${id}/cantidad`, {
+  const res = await apiFetch(`${API}/${id}/cantidad`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ delta }),
@@ -146,7 +157,7 @@ el('sidebar').querySelectorAll('.sidebar__item[data-view]').forEach((btn) => {
 // --- Carga de categorías (dropdown del grid + lista del sidebar) ---
 
 async function cargarCategorias() {
-  const res = await fetch(`${API}/categorias`);
+  const res = await apiFetch(`${API}/categorias`);
   const cats = await res.json();
 
   categoryFilter.innerHTML = '<option value="">Todas las categorías</option>' +
@@ -182,7 +193,7 @@ async function cargarComponentes() {
   if (categoryFilter.value) params.set('category', categoryFilter.value);
   if (lowStockToggle.checked) params.set('lowStock', 'true');
 
-  const res = await fetch(`${API}?${params.toString()}`);
+  const res = await apiFetch(`${API}?${params.toString()}`);
   const items = await res.json();
   render(items);
 }
@@ -234,7 +245,7 @@ function render(items) {
 
 async function cargarTablaCategoria(category) {
   el('table-title').textContent = category;
-  const res = await fetch(`${API}?category=${encodeURIComponent(category)}`);
+  const res = await apiFetch(`${API}?category=${encodeURIComponent(category)}`);
   const items = await res.json();
   items.forEach((c) => { itemsCache[c.id] = c; });
 
@@ -265,7 +276,7 @@ async function cargarTablaCategoria(category) {
 // --- Vista: lista de compras (stock bajo) ---
 
 async function cargarListaCompras() {
-  const res = await fetch(`${API}/stock-bajo`);
+  const res = await apiFetch(`${API}/stock-bajo`);
   const items = await res.json();
   items.forEach((c) => { itemsCache[c.id] = c; });
 
@@ -322,7 +333,7 @@ function abrirNuevo() {
 }
 
 async function abrirEdicion(id) {
-  const res = await fetch(`${API}/${id}`);
+  const res = await apiFetch(`${API}/${id}`);
   if (!res.ok) return;
   const c = await res.json();
 
@@ -376,13 +387,13 @@ form.addEventListener('submit', async (e) => {
   };
 
   if (id) {
-    await fetch(`${API}/${id}`, {
+    await apiFetch(`${API}/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(datos),
     });
   } else {
-    await fetch(API, {
+    await apiFetch(API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(datos),
@@ -398,7 +409,7 @@ el('btn-delete').addEventListener('click', async () => {
   if (!id) return;
   if (!confirm('¿Eliminar este componente?')) return;
 
-  await fetch(`${API}/${id}`, { method: 'DELETE' });
+  await apiFetch(`${API}/${id}`, { method: 'DELETE' });
   cerrarDrawer();
   await refrescarVistaActual();
 });
@@ -415,6 +426,61 @@ searchInput.addEventListener('input', () => {
 categoryFilter.addEventListener('change', cargarComponentes);
 lowStockToggle.addEventListener('change', cargarComponentes);
 
-// Init
-cargarCategorias();
-cargarComponentes();
+// --- Autenticación ---
+
+const loginOverlay = el('login-overlay');
+const loginForm = el('login-form');
+const loginPassword = el('login-password');
+const loginError = el('login-error');
+const board = el('board');
+
+function mostrarLogin(mensaje) {
+  board.classList.add('hidden');
+  loginOverlay.classList.remove('hidden');
+  if (mensaje) {
+    loginError.textContent = mensaje;
+    loginError.classList.remove('hidden');
+  }
+  loginPassword.value = '';
+  loginPassword.focus();
+}
+
+function mostrarApp() {
+  loginOverlay.classList.add('hidden');
+  loginError.classList.add('hidden');
+  board.classList.remove('hidden');
+  cargarCategorias();
+  cargarComponentes();
+}
+
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const res = await fetch('/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password: loginPassword.value }),
+  });
+
+  if (res.ok) {
+    mostrarApp();
+  } else {
+    const data = await res.json().catch(() => ({}));
+    loginError.textContent = data.error || 'No se pudo iniciar sesión';
+    loginError.classList.remove('hidden');
+    loginPassword.value = '';
+    loginPassword.focus();
+  }
+});
+
+el('btn-logout').addEventListener('click', async () => {
+  await fetch('/api/auth/logout', { method: 'POST' });
+  mostrarLogin();
+});
+
+// Init: revisa si ya hay sesión activa (cookie) antes de mostrar login o app
+(async function init() {
+  const res = await fetch('/api/auth/status');
+  const { authenticated } = await res.json();
+  if (authenticated) mostrarApp();
+  else loginOverlay.classList.remove('hidden');
+})();

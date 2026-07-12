@@ -44,6 +44,19 @@ Completa `.env`:
 
 Invita el bot a tu servidor con los scopes `bot` y `applications.commands` desde el "OAuth2 URL Generator" del panel de Discord.
 
+## Login de la web
+
+La app web pide una contraseña única antes de mostrar nada (no hay usuarios individuales, es un solo acceso compartido). Para configurarla:
+
+```bash
+cd backend
+node scripts/hash-password.js "tu-contraseña-elegida"
+```
+
+Copiá el hash que te imprime a `APP_PASSWORD_HASH` en tu `.env`, y agregá cualquier cadena aleatoria larga como `JWT_SECRET` (por ejemplo, generala con `openssl rand -hex 32`). La sesión dura 30 días; para cerrarla antes, usá el botón "Salir" del header.
+
+⚠️ Si desplegás en la nube (Render, etc.), agregá `APP_PASSWORD_HASH` y `JWT_SECRET` como variables de entorno del servicio backend — no subas el `.env` real a git (ya está en `.gitignore`).
+
 ## 4. Instalar y correr
 
 **Backend (API + app web):**
