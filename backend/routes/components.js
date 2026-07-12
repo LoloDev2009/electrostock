@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const svc = require('../../shared/componentsService');
+const svc = require('../shared/componentsService');
 
 // GET /api/components?category=&search=&lowStock=true
 router.get('/', async (req, res) => {
