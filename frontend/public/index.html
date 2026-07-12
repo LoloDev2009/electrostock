@@ -22,17 +22,24 @@
 
   <div class="board hidden" id="board">
     <header class="board__header">
-      <div class="brand">
-        <span class="brand__mark" aria-hidden="true"></span>
-        <div>
-          <h1>Inventario</h1>
-          <p class="brand__sub">componentes &amp; materiales electrónicos</p>
+      <div class="header-left">
+        <button type="button" id="btn-menu" class="btn-menu" aria-label="Abrir menú" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true"></span>
+          <div>
+            <h1>Inventario</h1>
+            <p class="brand__sub">componentes &amp; materiales electrónicos</p>
+          </div>
         </div>
       </div>
       <div class="header-right">
         <div class="header-stats" id="header-stats"></div>
-        <button id="btn-new" class="btn btn--primary">+ Componente</button>
-        <button id="btn-logout" class="btn" title="Cerrar sesión">Salir</button>
+        <div class="header-buttons">
+          <button id="btn-new" class="btn btn--primary">+ Componente</button>
+          <button id="btn-logout" class="btn" title="Cerrar sesión">Salir</button>
+        </div>
       </div>
     </header>
 
@@ -44,6 +51,7 @@
         <div class="sidebar__section">&nbsp;</div>
         <button type="button" class="sidebar__item" data-view="shopping">🛒 <span>Lista de compras</span></button>
       </nav>
+      <div id="sidebar-overlay" class="sidebar-overlay hidden"></div>
 
       <main class="content">
         <!-- Vista: inventario completo (tarjetas) -->
@@ -53,10 +61,6 @@
             <select id="category-filter">
               <option value="">Todas las categorías</option>
             </select>
-            <label class="toggle">
-              <input type="checkbox" id="low-stock-toggle">
-              <span>Solo stock bajo</span>
-            </label>
           </section>
           <div id="empty-state" class="empty-state hidden">
             <p>No hay componentes que coincidan.</p>

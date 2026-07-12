@@ -16,7 +16,6 @@ const grid = el('grid');
 const emptyState = el('empty-state');
 const searchInput = el('search');
 const categoryFilter = el('category-filter');
-const lowStockToggle = el('low-stock-toggle');
 const overlay = el('overlay');
 const drawer = el('drawer');
 const form = el('component-form');
@@ -81,11 +80,9 @@ async function ajustarCantidad(id, delta) {
   const actualizado = await res.json();
   itemsCache[id] = actualizado;
 
-  // Si el ajuste puede sacar/meter el ítem de la vista actual, se re-renderiza esa vista completa.
+  // Si el ajuste puede sacar/meter el ítem de la "lista de compras", se re-renderiza esa vista completa.
   if (currentView === 'shopping') {
     cargarListaCompras();
-  } else if (currentView === 'grid' && lowStockToggle.checked) {
-    cargarComponentes();
   } else {
     actualizarQtyEnDOM(actualizado);
   }
@@ -127,7 +124,32 @@ function marcarActivo(view, category) {
   }
 }
 
+// --- Menú hamburguesa (mobile) ---
+
+const btnMenu = el('btn-menu');
+const sidebarEl = el('sidebar');
+const sidebarOverlay = el('sidebar-overlay');
+
+function abrirMenu() {
+  sidebarEl.classList.add('sidebar--open');
+  sidebarOverlay.classList.remove('hidden');
+  btnMenu.setAttribute('aria-expanded', 'true');
+}
+
+function cerrarMenu() {
+  sidebarEl.classList.remove('sidebar--open');
+  sidebarOverlay.classList.add('hidden');
+  btnMenu.setAttribute('aria-expanded', 'false');
+}
+
+btnMenu.addEventListener('click', () => {
+  if (sidebarEl.classList.contains('sidebar--open')) cerrarMenu();
+  else abrirMenu();
+});
+sidebarOverlay.addEventListener('click', cerrarMenu);
+
 function setView(view, category) {
+  cerrarMenu();
   currentView = view;
   currentCategory = category || null;
 
@@ -191,7 +213,6 @@ async function cargarComponentes() {
   const params = new URLSearchParams();
   if (searchInput.value.trim()) params.set('search', searchInput.value.trim());
   if (categoryFilter.value) params.set('category', categoryFilter.value);
-  if (lowStockToggle.checked) params.set('lowStock', 'true');
 
   const res = await apiFetch(`${API}?${params.toString()}`);
   const items = await res.json();
@@ -424,7 +445,6 @@ searchInput.addEventListener('input', () => {
   debounceTimer = setTimeout(cargarComponentes, 250);
 });
 categoryFilter.addEventListener('change', cargarComponentes);
-lowStockToggle.addEventListener('change', cargarComponentes);
 
 // --- Autenticación ---
 
