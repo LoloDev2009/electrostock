@@ -18,27 +18,59 @@
           <p class="brand__sub">componentes &amp; materiales electrónicos</p>
         </div>
       </div>
-      <div class="header-stats" id="header-stats"></div>
+      <div class="header-right">
+        <div class="header-stats" id="header-stats"></div>
+        <button id="btn-new" class="btn btn--primary">+ Componente</button>
+      </div>
     </header>
 
-    <section class="controls">
-      <input id="search" type="text" placeholder="Buscar por nombre, valor o número de parte…" autocomplete="off">
-      <select id="category-filter">
-        <option value="">Todas las categorías</option>
-      </select>
-      <label class="toggle">
-        <input type="checkbox" id="low-stock-toggle">
-        <span>Solo stock bajo</span>
-      </label>
-      <button id="btn-new" class="btn btn--primary">+ Componente</button>
-    </section>
+    <div class="layout">
+      <nav class="sidebar" id="sidebar">
+        <button type="button" class="sidebar__item" data-view="grid">📦 <span>Inventario</span></button>
+        <div class="sidebar__section">Categorías</div>
+        <div id="sidebar-categories"></div>
+        <div class="sidebar__section">&nbsp;</div>
+        <button type="button" class="sidebar__item" data-view="shopping">🛒 <span>Lista de compras</span></button>
+      </nav>
 
-    <main>
-      <div id="empty-state" class="empty-state hidden">
-        <p>No hay componentes que coincidan.</p>
-      </div>
-      <div id="grid" class="grid"></div>
-    </main>
+      <main class="content">
+        <!-- Vista: inventario completo (tarjetas) -->
+        <div id="view-grid">
+          <section class="controls">
+            <input id="search" type="text" placeholder="Buscar por nombre, valor o número de parte…" autocomplete="off">
+            <select id="category-filter">
+              <option value="">Todas las categorías</option>
+            </select>
+            <label class="toggle">
+              <input type="checkbox" id="low-stock-toggle">
+              <span>Solo stock bajo</span>
+            </label>
+          </section>
+          <div id="empty-state" class="empty-state hidden">
+            <p>No hay componentes que coincidan.</p>
+          </div>
+          <div id="grid" class="grid"></div>
+        </div>
+
+        <!-- Vista: tabla de una categoría -->
+        <div id="view-table" class="hidden">
+          <h2 id="table-title"></h2>
+          <table class="table">
+            <thead>
+              <tr><th>Nombre</th><th>Valor</th><th>Cantidad</th><th>Ubicación</th></tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+          </table>
+        </div>
+
+        <!-- Vista: lista de compras (stock bajo) -->
+        <div id="view-shopping" class="hidden">
+          <h2>Lista de compras</h2>
+          <p class="muted">Componentes con cantidad igual o menor al mínimo configurado.</p>
+          <ul class="shopping-list" id="shopping-list"></ul>
+        </div>
+      </main>
+    </div>
   </div>
 
   <!-- Panel lateral: crear/editar -->

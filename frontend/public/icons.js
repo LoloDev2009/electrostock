@@ -24,8 +24,6 @@ const ICONOS = {
 
   cable: `<svg ${SVG_ATTRS}><path d="M2 12 q3 -6 6 0 t 6 0 t 6 0 t 6 0"/></svg>`,
 
-  display: `<svg ${SVG_ATTRS}><rect x="2" y="5" width="20" height="13" rx="1.5"/><line x1="6" y1="9" x2="10" y2="9"/><line x1="6" y1="12" x2="10" y2="12"/><line x1="6" y1="15" x2="9" y2="15"/><line x1="13" y1="9" x2="18" y2="15"/><line x1="18" y1="9" x2="13" y2="15"/></svg>`,
-
   bateria: `<svg ${SVG_ATTRS}><rect x="2" y="7" width="18" height="10" rx="1.5"/><line x1="22" y1="10" x2="22" y2="14"/><line x1="6" y1="9" x2="6" y2="15"/><line x1="10" y1="9" x2="10" y2="15"/></svg>`,
 
   interruptor: `<svg ${SVG_ATTRS}><rect x="2" y="9" width="20" height="6" rx="3"/><circle cx="8" cy="12" r="2.5" fill="currentColor" stroke="none"/></svg>`,
@@ -35,15 +33,12 @@ const ICONOS = {
   mecanico: `<svg ${SVG_ATTRS}><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>`,
 
   otro: `<svg ${SVG_ATTRS}><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="12" cy="12" r="2"/></svg>`,
-
-  motor: `<svg ${SVG_ATTRS}><circle cx="10" cy="12" r="7"/><path d="M6 9l2 3-2 3M11 9l2 3-2 3"/><line x1="17" y1="12" x2="22" y2="12"/></svg>`,
 };
 
 // Palabra clave a buscar dentro del nombre de categoría -> ícono a usar
 const REGLAS = [
   [/resist/, 'resistencia'],
   [/capacit/, 'capacitor'],
-  [/display|pantalla|lcd|oled|7 segmentos|siete segmentos/, 'display'],
   [/induct|bobina/, 'inductor'],
   [/diodo|led/, 'diodo'],
   [/transistor|mosfet|fet\b/, 'transistor'],
@@ -53,7 +48,6 @@ const REGLAS = [
   [/sensor/, 'sensor'],
   [/modulo|módulo|board|placa/, 'modulo'],
   [/cable|jumper|alambre/, 'cable'],
-  [/motor|servo|paso a paso|stepper/, 'motor'],
   [/bateria|batería|pila|cargador/, 'bateria'],
   [/switch|interruptor|boton|botón|pulsador/, 'interruptor'],
   [/herramienta|tool|soldador|cautin|cautín/, 'herramienta'],
