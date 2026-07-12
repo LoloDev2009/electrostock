@@ -21,10 +21,7 @@ CREATE TABLE IF NOT EXISTS components (
     updated_at      TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_components_category ON components(category);
-CREATE INDEX IF NOT EXISTS idx_components_name_trgm ON components USING gin (name gin_trgm_ops);
-
--- Requiere la extensión pg_trgm para búsquedas por similitud de texto
+-- Requiere la extensión pg_trgm para búsquedas por similitud de texto (debe ir antes del índice que la usa)
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
 CREATE INDEX IF NOT EXISTS idx_components_category ON components(category);

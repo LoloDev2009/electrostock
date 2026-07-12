@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const svc = require('../../shared/componentsService');
+const svc = require('../shared/componentsService');
 
 module.exports = {
   data: new SlashCommandBuilder()

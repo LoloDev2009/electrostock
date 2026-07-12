@@ -2,7 +2,7 @@ const {
   SlashCommandBuilder, EmbedBuilder,
   ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder,
 } = require('discord.js');
-const svc = require('../../shared/componentsService');
+const svc = require('../shared/componentsService');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -11,6 +11,7 @@ module.exports = {
 
   modalCustomId: 'modal-agregar',
 
+  // Al usar /agregar, se abre el formulario (no hace falta llenar opciones del comando)
   async execute(interaction) {
     const modal = new ModalBuilder()
       .setCustomId(this.modalCustomId)
@@ -62,6 +63,7 @@ module.exports = {
     await interaction.showModal(modal);
   },
 
+  // Se ejecuta cuando el usuario envía el formulario
   async handleModal(interaction) {
     const nombre = interaction.fields.getTextInputValue('nombre').trim();
     const categoria = interaction.fields.getTextInputValue('categoria').trim();

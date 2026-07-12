@@ -4,13 +4,14 @@ App web + bot de Discord para llevar el inventario de tus componentes y material
 
 ```
 inventario-electronico/
-├── db/schema.sql        # esquema de PostgreSQL
-├── shared/               # lógica de datos compartida (backend + bot)
-├── backend/              # API REST + sirve la app web
-├── bot/                  # bot de Discord (slash commands)
-├── frontend/public/      # app web (HTML/CSS/JS, sin build)
+├── db/schema.sql          # esquema de PostgreSQL
+├── backend/                # API REST + sirve la app web (incluye su copia de shared/)
+├── bot/                     # bot de Discord — slash commands (incluye su copia de shared/)
+├── frontend/public/        # app web (HTML/CSS/JS, sin build)
 └── .env.example
 ```
+
+> `backend/shared/` y `bot/shared/` son dos copias de la misma lógica de datos (conexión a Postgres + queries). Están duplicadas a propósito: así cada servicio es autocontenido y se puede desplegar como "Root Directory" independiente en Render, Railway, etc. sin que se rompa el `require`. Si cambiás algo en una, replicalo en la otra.
 
 ## 1. Requisitos
 
@@ -29,8 +30,6 @@ psql -d inventario -f db/schema.sql
 
 Si usas un proveedor en la nube, solo necesitas la cadena de conexión (`DATABASE_URL`) y correr el mismo `schema.sql` contra ella.
 
-postgresql://postgres:cuantoscapacitorestengo@db.ixsikrpckdwowrwtkgjr.supabase.co:5432/postgres
-psw: cuantoscapacitorestengo
 ## 3. Configuración
 
 ```bash

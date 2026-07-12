@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const svc = require('../../shared/componentsService');
+const svc = require('../shared/componentsService');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -20,7 +20,7 @@ module.exports = {
       .setColor(0x9b59b6)
       .setDescription(
         items
-          .map((c) => `**#${c.id} ${c.name}** — ${c.quantity} un. — spec: ${c.value_spec}`)
+          .map((c) => `**#${c.id} ${c.name}** — ${c.quantity} un. — cat: ${c.category}`)
           .join('\n')
       );
 
